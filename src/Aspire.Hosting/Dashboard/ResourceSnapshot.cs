@@ -31,6 +31,7 @@ internal abstract class ResourceSnapshot
     public required bool IsHidden { get; init; }
     public required bool SupportsDetailedTelemetry { get; init; }
     public required string? IconName { get; init; }
+    public required IconSource? IconSource { get; init; }
     public required IconVariant? IconVariant { get; init; }
 
     protected abstract IEnumerable<(string Key, Value Value, bool IsSensitive)> GetProperties();

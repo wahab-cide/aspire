@@ -324,4 +324,9 @@
     <EmbeddedResource Include="$(SharedDir)Mcp\Resources\aspire-64.png" Link="Mcp\Resources\aspire-64.png" />
     <None Include="wwwroot\js\README.md" />
   </ItemGroup>
+
+  <!-- Devicon SVG icons as embedded resources -->
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Icons\Devicon\*.svg" />
+  </ItemGroup>
 </Project>

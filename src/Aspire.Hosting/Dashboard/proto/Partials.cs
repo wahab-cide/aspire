@@ -32,6 +32,11 @@ partial class Resource
             resource.IconVariant = MapIconVariant(snapshot.IconVariant);
         }
 
+        if (snapshot.IconSource is not null)
+        {
+            resource.IconSource = MapIconSource(snapshot.IconSource.Value);
+        }
+
         if (snapshot.CreationTimeStamp.HasValue)
         {
             resource.CreatedAt = Timestamp.FromDateTime(snapshot.CreationTimeStamp.Value.ToUniversalTime());
@@ -139,6 +144,16 @@ partial class Resource
             Hosting.ApplicationModel.IconVariant.Filled => IconVariant.Filled,
             null => IconVariant.Regular,
             _ => throw new InvalidOperationException("Unexpected icon variant: " + iconVariant)
+        };
+    }
+
+    private static IconSource MapIconSource(Hosting.ApplicationModel.IconSource iconSource)
+    {
+        return iconSource switch
+        {
+            Hosting.ApplicationModel.IconSource.FluentUi => IconSource.Fluentui,
+            Hosting.ApplicationModel.IconSource.Devicon => IconSource.Devicon,
+            _ => throw new InvalidOperationException("Unexpected icon source: " + iconSource)
         };
     }
 

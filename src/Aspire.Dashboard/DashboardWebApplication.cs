@@ -298,6 +298,7 @@ public sealed class DashboardWebApplication : IAsyncDisposable
         builder.Services.AddFluentUIComponents();
 
         builder.Services.AddSingleton<IconResolver>();
+        builder.Services.AddSingleton<DeviconResolver>();
 
         builder.Services.AddScoped<IThemeResolver, BrowserThemeResolver>();
         builder.Services.AddScoped<ThemeManager>();

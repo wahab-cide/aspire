@@ -14,8 +14,8 @@ internal static class ResourceIconHelpers
     /// </summary>
     public static Icon GetIconForResource(IconResolver iconResolver, ResourceViewModel resource, IconSize desiredSize, IconVariant desiredVariant = IconVariant.Filled)
     {
-        // Check if the resource has a custom icon specified
-        if (!string.IsNullOrWhiteSpace(resource.IconName))
+        // Check if the resource has a custom FluentUI icon specified
+        if (!string.IsNullOrWhiteSpace(resource.IconName) && resource.IconSource != IconSource.Devicon)
         {
             var customIcon = iconResolver.ResolveIconName(resource.IconName, desiredSize, resource.IconVariant ?? IconVariant.Filled);
             if (customIcon != null)
@@ -60,6 +60,48 @@ internal static class ResourceIconHelpers
 
             return iconResolver.ResolveIconName("CodeCircle", desiredSize, desiredVariant);
         }
+    }
+
+    /// <summary>
+    /// Gets the icon path data for a resource, checking for Devicon icons first if specified.
+    /// </summary>
+    /// <param name="iconResolver">The FluentUI icon resolver.</param>
+    /// <param name="deviconResolver">The Devicon resolver.</param>
+    /// <param name="resource">The resource to get the icon for.</param>
+    /// <param name="desiredSize">The desired icon size.</param>
+    /// <param name="desiredVariant">The desired icon variant (for FluentUI icons).</param>
+    /// <returns>The SVG path data string for the icon.</returns>
+    public static string GetIconPathDataForResource(
+        IconResolver iconResolver,
+        DeviconResolver deviconResolver,
+        ResourceViewModel resource,
+        IconSize desiredSize,
+        IconVariant desiredVariant = IconVariant.Filled)
+    {
+        // Check if the resource has a custom Devicon specified
+        if (!string.IsNullOrWhiteSpace(resource.IconName) && resource.IconSource == IconSource.Devicon)
+        {
+            var deviconPath = deviconResolver.GetIconPathData(resource.IconName);
+            if (deviconPath is not null)
+            {
+                return deviconPath;
+            }
+            // Fall through to FluentUI icons if Devicon not found
+        }
+
+        // Use FluentUI icon
+        var fluentIcon = GetIconForResource(iconResolver, resource, desiredSize, desiredVariant);
+        return ExtractPathData(fluentIcon);
+    }
+
+    /// <summary>
+    /// Extracts the path data from a FluentUI icon.
+    /// </summary>
+    public static string ExtractPathData(Icon icon)
+    {
+        var p = icon.Content;
+        var e = System.Xml.Linq.XElement.Parse(p);
+        return e.Attribute("d")!.Value;
     }
 
     public static (Icon? icon, Color color) GetHealthStatusIcon(HealthStatus? healthStatus)

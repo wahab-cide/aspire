@@ -25,6 +25,7 @@ public static class ModelTestHelpers
         ImmutableArray<RelationshipViewModel>? relationships = null,
         bool hidden = false,
         string? iconName = null,
+        IconSource? iconSource = null,
         IconVariant? iconVariant = null,
         ImmutableArray<VolumeViewModel>? volumes = null,
         ImmutableArray<HealthReportViewModel>? healthReports = null)
@@ -51,6 +52,7 @@ public static class ModelTestHelpers
             Relationships = relationships ?? [],
             IsHidden = hidden,
             IconName = iconName,
+            IconSource = iconSource,
             IconVariant = iconVariant
         };
     }

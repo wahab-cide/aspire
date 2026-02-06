@@ -89,16 +89,45 @@ public class WithIconNameTests
         // Should have both annotations (WithIconName adds, doesn't replace)
         var iconAnnotations = container.Resource.Annotations.OfType<ResourceIconAnnotation>().ToList();
         Assert.Equal(2, iconAnnotations.Count);
-        
+
         // Get the latest one - this is what ResourceNotificationService should use
         var latestAnnotation = iconAnnotations.Last();
         Assert.Equal("CloudArrowUp", latestAnnotation.IconName);
         Assert.Equal(IconVariant.Regular, latestAnnotation.IconVariant);
-        
+
         // Verify that TryGetLastAnnotation returns the correct one
         Assert.True(container.Resource.TryGetLastAnnotation<ResourceIconAnnotation>(out var lastAnnotation));
         Assert.Equal("CloudArrowUp", lastAnnotation.IconName);
         Assert.Equal(IconVariant.Regular, lastAnnotation.IconVariant);
+    }
+
+    [Fact]
+    public void WithIcon_Devicon_SetsIconNameAndDeviconSource()
+    {
+        using var builder = TestDistributedApplicationBuilder.Create();
+
+        var container = builder.AddContainer("mycontainer", "redis:latest")
+                              .WithIcon(DeviconIcons.Redis);
+
+        // Verify the annotation was added with Devicon source
+        var iconAnnotation = container.Resource.Annotations.OfType<ResourceIconAnnotation>().Single();
+        Assert.Equal("redis", iconAnnotation.IconName);
+        Assert.Equal(IconSource.Devicon, iconAnnotation.IconSource);
+        // Devicon icons should have Regular variant (not used, but set for consistency)
+        Assert.Equal(IconVariant.Regular, iconAnnotation.IconVariant);
+    }
+
+    [Fact]
+    public void WithIconName_SetsFluentUiSource_ByDefault()
+    {
+        using var builder = TestDistributedApplicationBuilder.Create();
+
+        var container = builder.AddContainer("mycontainer", "myimage")
+                              .WithIconName("Database");
+
+        // WithIconName should set FluentUi as the source
+        var iconAnnotation = container.Resource.Annotations.OfType<ResourceIconAnnotation>().Single();
+        Assert.Equal(IconSource.FluentUi, iconAnnotation.IconSource);
     }
 
     private sealed class TestProject : IProjectMetadata

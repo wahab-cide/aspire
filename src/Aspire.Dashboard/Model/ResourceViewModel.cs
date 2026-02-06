@@ -44,6 +44,7 @@ public sealed class ResourceViewModel
     public bool IsHidden { private get; init; }
     public bool SupportsDetailedTelemetry { get; init; }
     public string? IconName { get; init; }
+    public IconSource? IconSource { get; init; }
     public IconVariant? IconVariant { get; init; }
     public bool IsParameter => string.Equals(ResourceType, KnownResourceTypes.Parameter, StringComparison.Ordinal);
 

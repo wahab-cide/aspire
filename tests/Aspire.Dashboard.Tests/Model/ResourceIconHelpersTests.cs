@@ -13,6 +13,7 @@ namespace Aspire.Dashboard.Tests.Model;
 public sealed class ResourceIconHelpersTests
 {
     private readonly IconResolver _iconResolver = new IconResolver(NullLogger<IconResolver>.Instance);
+    private readonly DeviconResolver _deviconResolver = new DeviconResolver(NullLogger<DeviconResolver>.Instance);
 
     [Fact]
     public void GetIconForResource_WithCustomIcon_ReturnsCustomIcon()
@@ -160,5 +161,41 @@ public sealed class ResourceIconHelpersTests
         // Assert
         Assert.NotNull(icon);
         Assert.Equal(size, icon.Size);
+    }
+
+    [Fact]
+    public void GetIconPathDataForResource_WithDeviconSource_ReturnsDeviconPath()
+    {
+        // Arrange
+        var resource = ModelTestHelpers.CreateResource(
+            resourceType: KnownResourceTypes.Container,
+            iconName: "redis",
+            iconSource: IconSource.Devicon);
+
+        // Act
+        var pathData = ResourceIconHelpers.GetIconPathDataForResource(
+            _iconResolver, _deviconResolver, resource, IconSize.Size24);
+
+        // Assert
+        Assert.NotNull(pathData);
+        Assert.NotEmpty(pathData);
+    }
+
+    [Fact]
+    public void GetIconPathDataForResource_WithInvalidDevicon_FallsBackToFluentUi()
+    {
+        // Arrange - Use an icon name that doesn't exist
+        var resource = ModelTestHelpers.CreateResource(
+            resourceType: KnownResourceTypes.Container,
+            iconName: "nonexistent-icon-xyz",
+            iconSource: IconSource.Devicon);
+
+        // Act
+        var pathData = ResourceIconHelpers.GetIconPathDataForResource(
+            _iconResolver, _deviconResolver, resource, IconSize.Size24);
+
+        // Assert - Should still return a valid path from the fallback
+        Assert.NotNull(pathData);
+        Assert.NotEmpty(pathData);
     }
 }

@@ -43,6 +43,7 @@ partial class Resource
                 IsHidden = IsHidden,
                 SupportsDetailedTelemetry = SupportsDetailedTelemetry,
                 IconName = HasIconName ? IconName : null,
+                IconSource = HasIconSource ? MapResourceIconSource(IconSource) : null,
                 IconVariant = HasIconVariant ? MapResourceIconVariant(IconVariant) : null
             };
         }
@@ -149,6 +150,16 @@ partial class Resource
                 IconVariant.Regular => FluentUIIconVariant.Regular,
                 IconVariant.Filled => FluentUIIconVariant.Filled,
                 _ => throw new InvalidOperationException("Unknown icon variant: " + iconVariant),
+            };
+        }
+
+        static Dashboard.Model.IconSource MapResourceIconSource(IconSource iconSource)
+        {
+            return iconSource switch
+            {
+                IconSource.Fluentui => Dashboard.Model.IconSource.FluentUi,
+                IconSource.Devicon => Dashboard.Model.IconSource.Devicon,
+                _ => throw new InvalidOperationException("Unknown icon source: " + iconSource),
             };
         }
     }

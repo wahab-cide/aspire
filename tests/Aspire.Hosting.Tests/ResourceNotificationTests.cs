@@ -481,8 +481,8 @@ public class ResourceNotificationTests
         var resource = new CustomResource("myResource");
 
         // Add multiple icon annotations to test the override behavior
-        resource.Annotations.Add(new ResourceIconAnnotation("FirstIcon", IconVariant.Filled));
-        resource.Annotations.Add(new ResourceIconAnnotation("LastIcon", IconVariant.Regular));
+        resource.Annotations.Add(new ResourceIconAnnotation("FirstIcon", IconSource.FluentUi, IconVariant.Filled));
+        resource.Annotations.Add(new ResourceIconAnnotation("LastIcon", IconSource.FluentUi, IconVariant.Regular));
 
         var notificationService = ResourceNotificationServiceTestHelpers.Create();
 
@@ -541,8 +541,8 @@ public class ResourceNotificationTests
         var resource = new CustomResource("myResource");
 
         // Add multiple icon annotations to simulate .WithIconName("FirstIcon").WithIconName("LastIcon")
-        resource.Annotations.Add(new ResourceIconAnnotation("FirstIcon", IconVariant.Filled));
-        resource.Annotations.Add(new ResourceIconAnnotation("LastIcon", IconVariant.Regular));
+        resource.Annotations.Add(new ResourceIconAnnotation("FirstIcon", IconSource.FluentUi, IconVariant.Filled));
+        resource.Annotations.Add(new ResourceIconAnnotation("LastIcon", IconSource.FluentUi, IconVariant.Regular));
 
         var notificationService = ResourceNotificationServiceTestHelpers.Create();
 
@@ -578,7 +578,7 @@ public class ResourceNotificationTests
         var resource = new CustomResource("myResource");
 
         // Add icon annotation to the resource
-        resource.Annotations.Add(new ResourceIconAnnotation("AnnotationIcon", IconVariant.Regular));
+        resource.Annotations.Add(new ResourceIconAnnotation("AnnotationIcon", IconSource.FluentUi, IconVariant.Regular));
 
         var notificationService = ResourceNotificationServiceTestHelpers.Create();
 

@@ -134,14 +134,22 @@ public sealed record CustomResourceSnapshot
     internal bool SupportsDetailedTelemetry { get; init; }
 
     /// <summary>
-    /// The custom icon name for the resource. This should be a valid FluentUI icon name.
+    /// The custom icon name for the resource.
     /// If not specified, the dashboard will use default icons based on the resource type.
     /// </summary>
     public string? IconName { get; init; }
 
     /// <summary>
+    /// The icon source library (FluentUI or Devicon).
+    /// </summary>
+    public IconSource? IconSource { get; init; }
+
+    /// <summary>
     /// The custom icon variant for the resource.
     /// </summary>
+    /// <remarks>
+    /// This property is only applicable for FluentUI icons. For Devicon icons, this value is ignored.
+    /// </remarks>
     public IconVariant? IconVariant { get; init; }
 
     internal static HealthStatus? ComputeHealthStatus(ImmutableArray<HealthReportSnapshot> healthReports, string? state)

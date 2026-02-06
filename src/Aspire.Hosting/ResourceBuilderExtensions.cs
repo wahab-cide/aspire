@@ -2959,7 +2959,22 @@ public static class ResourceBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentException.ThrowIfNullOrWhiteSpace(iconName);
 
-        return builder.WithAnnotation(new ResourceIconAnnotation(iconName, iconVariant));
+        return builder.WithAnnotation(new ResourceIconAnnotation(iconName, IconSource.FluentUi, iconVariant));
+    }
+
+    /// <summary>
+    /// Specifies a Devicon icon to use when displaying the resource in the dashboard.
+    /// </summary>
+    /// <typeparam name="T">The resource type.</typeparam>
+    /// <param name="builder">The resource builder.</param>
+    /// <param name="icon">The Devicon icon to use.</param>
+    /// <returns>The <see cref="IResourceBuilder{T}"/>.</returns>
+    public static IResourceBuilder<T> WithIcon<T>(this IResourceBuilder<T> builder, DeviconResourceIcon icon) where T : IResource
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(icon);
+
+        return builder.WithAnnotation(new ResourceIconAnnotation(icon.Name, IconSource.Devicon, IconVariant.Regular));
     }
 
     /// <summary>
